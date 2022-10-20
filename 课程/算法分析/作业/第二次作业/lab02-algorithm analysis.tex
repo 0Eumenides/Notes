@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage[UTF8]{ctex}
+\usepackage{xeCJK} 
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+% !Mode:: "TeX:UTF-8"
+
+\setmainfont{Times New Roman}
+\usepackage{geometry}
+\geometry{a4paper,scale=0.8}
+\usepackage[linesnumbered,boxed,ruled,commentsnumbered]{algorithm2e}
+
+
+\begin{document}
+%\{\heiti 黑体}，{\kaishu 楷体} 
+
+\begin{center}
+{\huge \textbf{Lab02-Algorithm Analysis}}
+
+\textit{Exercises for Algorithms by Nengjun Zhu, 2022-2023 Fall Semester.}
+
+\vspace{1em}
+\textbf{Name:}\underline{\qquad 邓腾浩\qquad}\, \textbf{Student ID:}\underline{\qquad 22721544\qquad}\, \textbf{Email:}\underline{\qquad mitdth@163.com\qquad}
+\end{center}
+
+\begin{itemize}
+\item[1.] {\large Consider the sorting algorithm shown in Alg.1, which is called BUBBLESORT.}
+\begin{itemize}
+\item[(a)] What is the minimum number of element comparisons? When is this minimum achieved?
+\item[(b)] What is the maximum number of element comparisons? When is this maximum achieved?
+\item[(c)] Express the running time of Alg.1 in terms of the Ο and Ω notations.
+\item[(d)] Can the running time of the algorithm be expressed in terms of the Θ notation? Explain.
+\end{itemize}
+
+\begin{minipage}{10cm}
+\IncMargin{1em} % 使得行号不向外突出 
+\begin{algorithm}[H] 
+    %\SetAlgoNoLine % 不要算法中的竖线
+    \SetKwInOut{Input}{\textbf{input}}\SetKwInOut{Output}{\textbf{output}} % 替换关键词
+
+    \Input{
+        An array $A[1 \cdots n ] $ of  $n$ elements. \\}      
+    \Output{
+        $A[1 \cdots n ] $ in nondecreasing order. \\}
+    \BlankLine
+
+    $i \leftarrow 1; sorted \leftarrow false;$\\
+   \While{$i\leq n-1$ and not  $sorted$}{
+    $sorted \leftarrow true$\;
+    \For{$j\leftarrow n$ downto $i+1$ }{
+     \If{$A[j]<A[j-1]$}{
+      interchange $A[j]$ and $A[j-1]$\;
+      $sorted \leftarrow false$\;
+      }
+    }
+    $i \leftarrow i+1$
+    }
+    \caption{BUBBLESORT}
+\end{algorithm}
+\DecMargin{1em}
+\end{minipage}
+
+解：\\
+(a) 当数组为升序数组时，比较次数最少，最少比较次数为$n-1$\\
+(b) 当数组为降序数组时，比较次数最多，最多比较次数为:$(n-1)+(n-2)+...+1=\frac{n(n-1)}{2}$\\
+(c) 上界为$O(n^2)$，下界为$\Omega (n)$\\
+(d) 数组逆序度大小就是排序的交换次数，最大逆序度为$\frac{n(n-1)}{2}$，最小逆序度为$0$，因此平均情况的逆序度为$\frac{n(n-1)}{4}$，交换次数是$n^2$级的，而比较次数一定大于等于交换次数，算法的上界又是$O(n^2)$，所以算法的平均复杂度为$\Theta(n^2) $
+
+\item[2.] For Alg.2 and Alg.3 shown below, answer the following questions respectively.
+\begin{itemize}
+\item[(a)] Give the maximum number of times Line 6 is executed in Alg.2 when n is a power of 3.
+\item[(b)] Give the maximum number of times Line 5 is executed in Alg.3 when n is a power of 2.
+\item[(c)] What is the time complexity of both algorithms expressed in the $O$ and $\Theta$ notations?
+\end{itemize}
+
+\begin{minipage}[t]{.45\textwidth}
+\vspace{0pt}
+\IncMargin{1em} % 使得行号不向外突出 
+\begin{algorithm}[H] 
+    $count \leftarrow 0$\;
+    \For{$i \leftarrow 1$ to $n$ }{
+       $j \leftarrow \lfloor n/3 \rfloor$\;
+       \While{$j\geq 1$}{
+		\For{$k \leftarrow 1$ to $i$}{
+		 $count \leftarrow count +1$\;
+		 \eIf{$j$ is even}{
+		 	$j\leftarrow 0$\;}{$j \leftarrow \lfloor j/3 \rfloor$\;}
+		}       
+       }
+    }
+    \caption{COUNT1}
+\end{algorithm}
+\DecMargin{1em}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.45\textwidth}
+\vspace{0pt}
+\IncMargin{1em} % 使得行号不向外突出 
+\begin{algorithm}[H] 
+    $count \leftarrow 0$\;
+    \For{$i \leftarrow 1$ to $n$ }{
+       $j \leftarrow \lfloor n/2 \rfloor$\;
+       \While{$j\geq 1$}{
+		 $count \leftarrow count +1$\;
+		 \eIf{$j$ is odd}{
+		 	$j\leftarrow 0$\;}{$j \leftarrow  j/2$\;}    
+       }
+    }
+    \caption{COUNT2}
+\end{algorithm}
+\DecMargin{1em}
+\end{minipage}\\
+解：\\
+(a) $(log_{3}{n})^2+\frac{(n+log_{3}{n}+1)(n-log_{3}{n})}{2}$\\
+(b) $n log_{2}{n}$\\
+(c) 算法2： $O(n^2)$、 \par \hspace{1.1em}  算法3：$O(n log_{2}{n})$、$\Theta (n)$
+
+\item[3.] Fill in the blanks with either true of false:
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|} 
+    \hline
+    $f(n)$ & $g(n)$ & $f=O(g) $ &$f=\Omega(g)$  &$f=\Theta(g)$ \\
+    \hline\hline
+    $2n^3+3n$ & $100n^2 + 2n +100$ & false & true&false \\\hline
+    $50n + \mbox{log}n $ & $10n+\mbox{log}\mbox{log}n$ &false &false&true \\\hline
+    $50n\mbox{log}n$ & $10n\mbox{log}\mbox{log}n$ &  false & true&false\\\hline
+    $\mbox{log}n$ & $\mbox{log}^2n$ & true & false&false \\\hline
+    $n!$ & $5^n$ &  false & true&false\\
+    \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+
+\item[4.] Use the $\prec$ relation to order the following functions by growth rate:
+\begin{eqnarray}
+n^{1/100}, \sqrt{n}, \mbox{log} n^{100}, n \mbox{log} n, 5, \mbox{log} \mbox{log} n, \mbox{log}^2n,(\sqrt{n})^n, (1/2)^n, 2^{n^2}, n! \nonumber 
+\end{eqnarray}
+\end{itemize}
+解：
+\begin{eqnarray}
+(1/2)^n \prec 5 \prec \mbox{log} \mbox{log} n \prec \mbox{log} n^{100} \prec \mbox{log}^2n \prec n^{1/100} \prec \sqrt{n} \prec n \mbox{log} n \prec 2^{n^2} \prec (\sqrt{n})^n \prec n! \nonumber
+\end{eqnarray}
+
+\end{document}
